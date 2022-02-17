@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/java/jdk:8-zulu-alpine AS first
+
+COPY /source /usr/src/application
+
+WORKDIR /usr/src/application
+
+RUN javac application.java
+
+
+FROM  mcr.microsoft.com/java/jre:8-zulu-alpine
+
+WORKDIR /application
+
+COPY --from=first /usr/src/application .
+
+CMD ["java", "application"]
